@@ -23,7 +23,6 @@
       position: relative;
     }
 
-    /* Floating Background Emojis */
     .bg-emoji {
       position: absolute;
       font-size: 22px;
@@ -58,7 +57,6 @@
       50% { transform: scale(1.05); opacity: 1; }
     }
 
-    /* Gift Box Styles */
     .gift-box {
       width: 140px;
       height: 140px;
@@ -144,7 +142,6 @@
 
     .gift-box.open { pointer-events: none; }
 
-    /* 3D Card Container */
     .card-container {
       position: absolute;
       top: 50%;
@@ -228,7 +225,6 @@
       color: #4a5568;
     }
 
-    /* Confetti */
     .confetti {
       position: absolute;
       width: 10px;
@@ -238,7 +234,6 @@
       z-index: 12;
     }
 
-    /* Pop-up Message Box */
     .popup {
       display: none;
       position: fixed;
@@ -256,12 +251,33 @@
 
     .popup h3 { color: #2b6cb0; margin-bottom: 10px; }
     .popup p { font-size: 0.9rem; color: #4a5568; margin-bottom: 15px; }
+
+    .audio-control {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
 
-  <!-- Background Music (Khat Song) -->
-  <audio id="bgMusic" loop src="https://files.catbox.moe/5u6z6a.mp3"></audio>
+  <!-- Audio control icon for manual play/pause -->
+  <div class="audio-control" onclick="toggleAudio()">🎵</div>
+
+  <!-- Reliable Audio Stream (Khat Song) -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+  </audio>
 
   <div class="container" id="mainContainer">
     <div class="hint-text" id="hint">🎁 Tap to open your Mood Booster surprise!</div>
@@ -274,10 +290,8 @@
     </div>
   </div>
 
-  <!-- Interactive 3D Card -->
   <div class="card-container" id="morningCard">
     <div class="card-inner">
-      <!-- Front Side -->
       <div class="card-front">
         <div>
           <h1>Hey Harshu, Mera Cutu... 🥺💙</h1>
@@ -290,7 +304,6 @@
         <button class="btn" onclick="flipCard()">Click to Fix My Mood 💌</button>
       </div>
 
-      <!-- Back Side -->
       <div class="card-back">
         <div>
           <h2>Ek Chota Sa Question 💭</h2>
@@ -310,7 +323,6 @@
     </div>
   </div>
 
-  <!-- Final Popup -->
   <div class="popup" id="finalPopup">
     <h3>Yaaay! You're the best! 🎉</h3>
     <p>Aapki smile hi mera sabse bada gift hai, mera cutu. Have a stress-free and amazing day ahead, Harshu! I love you! 💕</p>
@@ -318,7 +330,6 @@
   </div>
 
   <script>
-    // Create floating background elements
     const emojis = ['🤍', '✨', '☁️', '💙', '🌸'];
     setInterval(() => {
       const emoji = document.createElement('div');
@@ -336,7 +347,12 @@
       const hint = document.getElementById('hint');
       const music = document.getElementById('bgMusic');
 
-      music.play().catch(() => console.log('Audio blocked'));
+      // Force Audio Play on First Click
+      music.play().then(() => {
+        console.log("Audio playing successfully");
+      }).catch((e) => {
+        console.log("Audio play failed:", e);
+      });
 
       giftBox.classList.add('open');
       hint.style.opacity = '0';
@@ -346,6 +362,15 @@
       setTimeout(() => {
         card.classList.add('show');
       }, 400);
+    }
+
+    function toggleAudio() {
+      const music = document.getElementById('bgMusic');
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
     }
 
     function flipCard() {
