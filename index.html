@@ -252,29 +252,28 @@
     .popup h3 { color: #2b6cb0; margin-bottom: 10px; }
     .popup p { font-size: 0.9rem; color: #4a5568; margin-bottom: 15px; }
 
-    .audio-control {
+    .audio-btn {
       position: fixed;
       top: 15px;
       right: 15px;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: #ffffff;
+      border: 2px solid #4a90e2;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #357abd;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
   </style>
 </head>
 <body>
 
-  <!-- Audio control icon for manual play/pause -->
-  <div class="audio-control" onclick="toggleAudio()">🎵</div>
+  <!-- Manual Play Button for Guarantee Sound -->
+  <button class="audio-btn" onclick="toggleAudio()">🎵 Play/Pause Music</button>
 
-  <!-- Reliable Audio Stream (Khat Song) -->
   <audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
   </audio>
@@ -347,12 +346,7 @@
       const hint = document.getElementById('hint');
       const music = document.getElementById('bgMusic');
 
-      // Force Audio Play on First Click
-      music.play().then(() => {
-        console.log("Audio playing successfully");
-      }).catch((e) => {
-        console.log("Audio play failed:", e);
-      });
+      music.play().catch(err => console.log("Audio play error:", err));
 
       giftBox.classList.add('open');
       hint.style.opacity = '0';
