@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Special Surprise for You! ❤️</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+    }
+
+    .hint-text {
+      color: #721c24;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 25px;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+
+    /* Gift Box Styles */
+    .gift-box {
+      width: 140px;
+      height: 140px;
+      position: relative;
+      margin: 0 auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gift-box:hover {
+      transform: scale(1.08);
+    }
+
+    .box-body {
+      width: 140px;
+      height: 100px;
+      background: #e63946;
+      border-radius: 0 0 12px 12px;
+      position: absolute;
+      bottom: 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .box-body::before {
+      content: '';
+      position: absolute;
+      width: 28px;
+      height: 100%;
+      background: #ffb703;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .box-lid {
+      width: 152px;
+      height: 35px;
+      background: #d62828;
+      border-radius: 8px;
+      position: absolute;
+      top: 15px;
+      left: -6px;
+      z-index: 2;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    .box-lid::before {
+      content: '';
+      position: absolute;
+      width: 28px;
+      height: 100%;
+      background: #ffb703;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Ribbon Bow */
+    .bow {
+      width: 40px;
+      height: 20px;
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .bow::before, .bow::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 4px solid #ffb703;
+      border-radius: 50% 50% 0 50%;
+      top: 0;
+    }
+
+    .bow::before {
+      left: -2px;
+      transform: rotate(45deg);
+    }
+
+    .bow::after {
+      right: -2px;
+      transform: rotate(-45deg) scaleX(-1);
+    }
+
+    /* Open Box Animation */
+    .gift-box.open .box-lid {
+      transform: translateY(-120px) rotate(-15deg);
+      opacity: 0;
+    }
+
+    .gift-box.open {
+      pointer-events: none;
+    }
+
+    /* Card Message Container */
+    .card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 320px;
+      background: #ffffff;
+      padding: 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+    }
+
+    .card.show {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .card h1 {
+      font-size: 1.8rem;
+      color: #e63946;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #4a4a4a;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #ffe3e3;
+      color: #d62828;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    /* Confetti Styling */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f2d74e;
+      border-radius: 3px;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="mainContainer">
+    <div class="hint-text" id="hint">🎁 Tap the gift box to open!</div>
+    
+    <div class="gift-box" id="giftBox" onclick="openGift()">
+      <div class="box-lid">
+        <div class="bow"></div>
+      </div>
+      <div class="box-body"></div>
+    </div>
+  </div>
+
+  <!-- Hidden Good Morning Card -->
+  <div class="card" id="morningCard">
+    <h1>Good Morning, Harshu! ☀️</h1>
+    <p>
+      Good morning jaan.. my baby uth jaiye! Hope your day is as bright, warm, and sweet as you are! 💖
+    </p>
+    <div class="badge">Have an amazing day! ✨</div>
+  </div>
+
+  <script>
+    function openGift() {
+      const giftBox = document.getElementById('giftBox');
+      const card = document.getElementById('morningCard');
+      const hint = document.getElementById('hint');
+
+      // Animate opening
+      giftBox.classList.add('open');
+      hint.style.opacity = '0';
+
+      // Launch Confetti
+      createConfetti();
+
+      // Show Card after short delay
+      setTimeout(() => {
+        card.classList.add('show');
+      }, 400);
+    }
+
+    function createConfetti() {
+      const colors = ['#e63946', '#ffb703', '#a8ded0', '#3a86ff', '#ff006e'];
+      for (let i = 0; i < 40; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        document.body.appendChild(confetti);
+
+        const startX = window.innerWidth / 2;
+        const startY = window.innerHeight / 2;
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 100 + Math.random() * 200;
+        const x = Math.cos(angle) * velocity;
+        const y = Math.sin(angle) * velocity;
+
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = `${startX}px`;
+        confetti.style.top = `${startY}px`;
+
+        confetti.animate([
+          { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${x}px, ${y - 100}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        ], {
+          duration: 1200 + Math.random() * 800,
+          easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+          fill: 'forwards'
+        });
+      }
+    }
+  </script>
+</body>
+</html>
